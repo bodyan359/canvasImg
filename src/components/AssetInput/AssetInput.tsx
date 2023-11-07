@@ -35,29 +35,27 @@ export const AssetInput: React.FC<AssetInputProps> = ({ onAddAsset }) => {
                     });
                 });
             }
-
-            return contentType === "image/jpeg" || contentType === "video/mp4";
+            return 'CONTACT ADMIN'
         } catch (error) {
             console.error("Error while fetching asset info:", error);
             return false;
         }
     };
 
-
     const handleAddAsset = async () => {
         try {
-            const isAsset = await fetchAssetInfo(url.replace(/\s+/g, ''));
+            const assetInfo = await fetchAssetInfo(url.replace(/\s+/g, ''));
 
-            if (isAsset) {
-                let newWidth = window.innerWidth > isAsset.width ? isAsset.width: window.innerWidth * 0.8;
-                let newHeight = window.innerWidth > isAsset.width ? isAsset.height : window.innerWidth * 0.8/isAsset.aspectRatio;
-            const asset: any = {
+            if (assetInfo) {
+                let newWidth = window.innerWidth > assetInfo.width ? assetInfo.width : window.innerWidth * 0.8;
+                let newHeight = window.innerWidth > assetInfo.width ? assetInfo.height : window.innerWidth * 0.8 / assetInfo.aspectRatio;
+                const asset: any = {
                     url: url.replace(/\s+/g, ''),
                     x: 100,
                     y: 200,
                     width: newWidth,
                     height: newHeight,
-                    aspectRatio: isAsset.aspectRatio,
+                    aspectRatio: assetInfo.aspectRatio,
                 };
                 onAddAsset(asset);
                 setUrl('');
@@ -68,6 +66,7 @@ export const AssetInput: React.FC<AssetInputProps> = ({ onAddAsset }) => {
             console.error("Error in handleAddAsset:", error);
         }
     };
+
 
 
     return (
