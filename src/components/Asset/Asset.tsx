@@ -18,14 +18,13 @@ export const Asset: React.FC<AssetProps> = ({ asset, onMove, onResize, onDelete 
 
     const handleResize = (e: React.MouseEvent) => {
         isResizing = true;
-        const newWidth = e.clientX;
-        const newHeight :number = newWidth / asset.aspectRatio;
-        setWidth(()=> newWidth);
-        setHeight(()=> newHeight);
-        onResize(newWidth, newHeight);
 
         function handleDrag(e: MouseEvent) {
             if (isDragging) {
+                const newWidth :number = e.clientX;
+                const newHeight :number = newWidth / asset.aspectRatio;
+                setWidth(()=> newWidth);
+                setHeight(()=> newHeight);
                 onResize(newWidth, newHeight);
             }
         }
@@ -68,11 +67,12 @@ export const Asset: React.FC<AssetProps> = ({ asset, onMove, onResize, onDelete 
     return (
         <div className="asset">
             <div className="asset-content"  onMouseDown={handleDragStart}
-                 style={{position:'absolute', left: asset.x, top: asset.y, width: asset.width, height: asset.height}}>
+                 style={{position:'absolute', left: asset.x, top: asset.y, width:width + 'px', height: height + 'px'}}>
                 <DeleteButton onClick={onDelete}>Remove</DeleteButton>
                 {isVideo ? (
                     <video src={asset.url} muted controls width={width + 'px'}
-                           height={height + 'px'}></video>
+                           height={height + 'px'}>
+                    </video>
                 ) : (
                     <img src={asset.url} alt="Asset" width={width + 'px'}
                          height={height + 'px'} />

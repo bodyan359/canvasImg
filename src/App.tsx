@@ -28,6 +28,11 @@ function App() {
         setAssets(updatedAssets);
     };
 
+    const printLogs = () => {
+        console.table(assets);
+        console.log(assets);
+    }
+
   return (
     <>
         <AssetInput onAddAsset={addAsset} />
@@ -37,7 +42,7 @@ function App() {
             onAssetResize={resizeAsset}
             onDeleteAsset={deleteAsset}
         />
-        <button onClick={() => {console.table(assets); console.log(assets)}}>Logs (console)</button>
+        <button onClick={printLogs}>Logs (console)</button>
     </>
   )
 }
