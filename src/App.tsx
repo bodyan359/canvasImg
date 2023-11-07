@@ -37,6 +37,7 @@ function App() {
             onAssetResize={resizeAsset}
             onDeleteAsset={deleteAsset}
         />
+        <button onClick={() => {console.table(assets); console.log(assets)}}>Logs (console)</button>
     </>
   )
 }

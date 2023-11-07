@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {DeleteButton, DragBorder} from "./Asset.styled";
 
 interface AssetProps {
@@ -12,13 +12,33 @@ export const Asset: React.FC<AssetProps> = ({ asset, onMove, onResize, onDelete 
     const [width, setWidth] = useState(asset.width);
     const [height, setHeight] = useState(asset.height);
 
+    const isVideo = asset.url.endsWith('.mp4') || asset.url.endsWith('.webm');
+
+    let isResizing = false;
+
     const handleResize = (e: React.MouseEvent) => {
+        isResizing = true;
         const newWidth = e.clientX;
         const newHeight :number = newWidth / asset.aspectRatio;
-        console.log('ass', asset.aspectRatio)
-        setWidth(()=>newWidth);
-        setHeight(()=>newHeight);
+        setWidth(()=> newWidth);
+        setHeight(()=> newHeight);
         onResize(newWidth, newHeight);
+
+        function handleDrag(e: MouseEvent) {
+            if (isDragging) {
+                onResize(newWidth, newHeight);
+            }
+        }
+
+        function handleDragEnd() {
+            isResizing = false;
+            document.removeEventListener('mousemove', handleDrag);
+            document.removeEventListener('mouseup', handleDragEnd);
+        }
+
+        document.addEventListener('mousemove', handleDrag);
+        document.addEventListener('mouseup', handleDragEnd);
+
     };
 
     let isDragging = false;
@@ -27,8 +47,6 @@ export const Asset: React.FC<AssetProps> = ({ asset, onMove, onResize, onDelete 
         isDragging = true;
         const offsetX = e.clientX - e.currentTarget.getBoundingClientRect().left;
         const offsetY = e.clientY - e.currentTarget.getBoundingClientRect().top;
-
-        console.log('offsetX',offsetX)
         function handleDrag(e: MouseEvent) {
             if (isDragging) {
                 const newX = e.clientX - offsetX;
@@ -46,8 +64,6 @@ export const Asset: React.FC<AssetProps> = ({ asset, onMove, onResize, onDelete 
         document.addEventListener('mousemove', handleDrag);
         document.addEventListener('mouseup', handleDragEnd);
     };
-
-    const isVideo = asset.url.endsWith('.mp4') || asset.url.endsWith('.webm'); // Check if it's a video
 
     return (
         <div className="asset">

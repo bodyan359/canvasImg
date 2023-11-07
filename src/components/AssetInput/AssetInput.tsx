@@ -14,10 +14,8 @@ export const AssetInput: React.FC<AssetInputProps> = ({ onAddAsset }) => {
             if (contentType === "image/jpeg") {
                 const img = new Image();
                 img.src = url;
-
                 return new Promise((resolve) => {
                     img.onload = () => {
-                        console.log('zal')
                         const width = img.width;
                         const height = img.height;
                         const aspectRatio = width / height;
@@ -48,15 +46,15 @@ export const AssetInput: React.FC<AssetInputProps> = ({ onAddAsset }) => {
 
     const handleAddAsset = async () => {
         try {
-            const isAsset = await fetchAssetInfo(url);
+            const isAsset = await fetchAssetInfo(url.replace(/\s+/g, ''));
 
             if (isAsset) {
                 let newWidth = window.innerWidth > isAsset.width ? isAsset.width: window.innerWidth * 0.8;
                 let newHeight = window.innerWidth > isAsset.width ? isAsset.height : window.innerWidth * 0.8/isAsset.aspectRatio;
             const asset: any = {
-                    url: url,
+                    url: url.replace(/\s+/g, ''),
                     x: 100,
-                    y: 100,
+                    y: 200,
                     width: newWidth,
                     height: newHeight,
                     aspectRatio: isAsset.aspectRatio,

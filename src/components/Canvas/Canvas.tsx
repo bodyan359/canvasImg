@@ -9,8 +9,24 @@ interface CanvasProps {
 }
 
 export const Canvas: React.FC<CanvasProps> = ({ assets, onAssetMove, onAssetResize, onDeleteAsset }) => {
+
+    const playAllVideos = () => {
+        const videoElements = document.querySelectorAll("video");
+        videoElements.forEach((video) => {
+            video.play();
+        });
+    };
+
+    const pauseAllVideos = () => {
+        const videoElements = document.querySelectorAll("video");
+        videoElements.forEach((video) => {
+            video.pause();
+        });
+    };
     return (
         <div className="canvas">
+            <button style={{margin: '15px'}} onClick={playAllVideos}>Start playing all videos</button>
+            <button onClick={pauseAllVideos}>Pause playing all videos</button>
             {assets.map((asset, index) => (
                 <Asset
                     key={index}
